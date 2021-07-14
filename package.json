@@ -35,5 +35,22 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "description": "Resume CV Template in ReactJS",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cv-resume-template"
+  },
+  "keywords": [
+    "Gresume",
+    "react",
+    "jsx"
+  ],
+  "author": "Jose Lopez lopezajoseg@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cv-resume-template"
+  },
+  "homepage": "https://github.com/cv-resume-template"
 }
