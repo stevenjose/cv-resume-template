@@ -4,7 +4,7 @@ export const Header = ({ bio }) => {
   var networks = bio.social.map(function (network) {
     return (
       <li key={network.name}>
-        <a href={network.url}>
+        <a href={network.url} target="_blank">
           <i className={network.className}></i>
         </a>
       </li>
@@ -44,11 +44,6 @@ export const Header = ({ bio }) => {
           <li>
             <a className="smoothscroll" href="#testimonials">
               Testimonials
-            </a>
-          </li>
-          <li>
-            <a className="smoothscroll" href="#contact">
-              Contact
             </a>
           </li>
         </ul>

@@ -6,6 +6,8 @@ import img1 from './assets/img/jgla.jpeg';
 import cv from './assets/cv/cv.pdf';
 import {Resume} from "./components/Resume";
 import { Portafolio } from "./components/Portafolio";
+import { Footer } from "./components/Footer";
+import { Testimonials } from "./components/Testimonials";
 
 function App() {
   
@@ -15,7 +17,8 @@ function App() {
   const [skills, setSkills] = useState([]);
   const [portafolio, setPortafolio] = useState([]);
   const [perfil, setPerfil] = useState([]);
-
+  const [testimonials, setTestimonials] = useState([]);
+  
   const getLinks = async () => {
     consultApi("education", setEstudios);
     consultApi("experience",setExperience);
@@ -23,16 +26,23 @@ function App() {
     consultApi("skills",setSkills);
     consultApi("portafolio",setPortafolio);
     consultApi("perfil",setPerfil);
+    consultApi("testimonials",setTestimonials);
   };
 
   const consultApi = (indice, setState) => {
-    db.collection(indice).onSnapshot((querySnapshot) => {
-      const docs = [];
-      querySnapshot.forEach((doc) => {
-        docs.push({ ...doc.data(), id: doc.id });
+    if(localStorage.getItem(indice)){
+      setState(JSON.parse(localStorage.getItem(indice)));
+    }else{
+      db.collection(indice).onSnapshot((querySnapshot) => {
+        const docs = [];
+        querySnapshot.forEach((doc) => {
+          docs.push({ ...doc.data(), id: doc.id });
+        });
+        setState(docs);
+        localStorage.setItem(indice, JSON.stringify(docs));
       });
-      setState(docs);
-    });
+    }
+   
   }
 
   useEffect(() => {
@@ -70,7 +80,8 @@ function App() {
     portafolio,
     education: estudios,
     certificate,
-    skills
+    skills,
+    testimonials
   };
 
   return (
@@ -79,6 +90,8 @@ function App() {
       <About  bio={person}/>
       <Resume person={person}/>
       <Portafolio portafolio={person.portafolio}/>
+      <Testimonials testimonials={person.testimonials}/>
+      <Footer social={person.social}/>
     </div>
   );
 }
