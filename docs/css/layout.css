@@ -33,7 +33,7 @@ header {
    height: 800px;
    min-height: 500px;
    width: 100%;
-   background: #161415 url(../images/header-background.jpg) no-repeat top center;
+   background: #161415 url('https://firebasestorage.googleapis.com/v0/b/hojavida-4d351.appspot.com/o/header-background.jpg?alt=media&token=196fe1fe-9249-49b5-a638-53dec137196b') no-repeat top center;
    background-size: cover !important;
 	-webkit-background-size: cover !important;
    text-align: center;
