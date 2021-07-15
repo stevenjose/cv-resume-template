@@ -8,6 +8,8 @@ import {Resume} from "./components/Resume";
 import { Portafolio } from "./components/Portafolio";
 import { Footer } from "./components/Footer";
 import { Testimonials } from "./components/Testimonials";
+import { useSelector, useDispatch } from 'react-redux'
+import { personLoad } from './app/personReducer'
 
 function App() {
   
@@ -18,6 +20,7 @@ function App() {
   const [portafolio, setPortafolio] = useState([]);
   const [perfil, setPerfil] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
+  const dispatch = useDispatch();
   
   const getLinks = async () => {
     consultApi("education", setEstudios);
@@ -32,6 +35,7 @@ function App() {
   const consultApi = (indice, setState) => {
     if(localStorage.getItem(indice)){
       setState(JSON.parse(localStorage.getItem(indice)));
+      dispatch(personLoad(person));
     }else{
       db.collection(indice).onSnapshot((querySnapshot) => {
         const docs = [];
@@ -39,6 +43,7 @@ function App() {
           docs.push({ ...doc.data(), id: doc.id });
         });
         setState(docs);
+        dispatch(personLoad(person));
         localStorage.setItem(indice, JSON.stringify(docs));
       });
     }
