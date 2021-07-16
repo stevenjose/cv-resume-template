@@ -9,7 +9,7 @@ import { Portafolio } from "./components/Portafolio";
 import { Footer } from "./components/Footer";
 import { Testimonials } from "./components/Testimonials";
 import { useSelector, useDispatch } from 'react-redux'
-import { personLoad } from './app/personReducer'
+import { personSkills,personPerfil,personEducation, personPortafolio } from "./app/personReducer";
 
 function App() {
   
@@ -20,8 +20,9 @@ function App() {
   const [portafolio, setPortafolio] = useState([]);
   const [perfil, setPerfil] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
+  const [pr, setPr] = useState({perfil,portafolio,skills});
   const dispatch = useDispatch();
-  
+  const personState = useSelector((state) => state.person.person);
   const getLinks = async () => {
     consultApi("education", setEstudios);
     consultApi("experience",setExperience);
@@ -33,9 +34,25 @@ function App() {
   };
 
   const consultApi = (indice, setState) => {
-    if(localStorage.getItem(indice)){
-      setState(JSON.parse(localStorage.getItem(indice)));
-      dispatch(personLoad(person));
+    if(sessionStorage.getItem(indice)){
+      setState(JSON.parse(localStorage.getItem(indice)));   
+      switch (indice) {
+        case 'skills':
+          dispatch(personSkills(JSON.parse(localStorage.getItem(indice))));
+          break;
+        case 'education':
+          dispatch(personEducation(JSON.parse(localStorage.getItem(indice))));
+          break;
+        case 'portafolio':
+          dispatch(personPortafolio(JSON.parse(localStorage.getItem(indice))));
+          break;  
+        case 'perfil':
+          let perfil1 = JSON.parse(localStorage.getItem(indice));
+          dispatch(personPerfil(perfil1[0]));
+          break;    
+        default:
+          break;
+      }
     }else{
       db.collection(indice).onSnapshot((querySnapshot) => {
         const docs = [];
@@ -43,16 +60,14 @@ function App() {
           docs.push({ ...doc.data(), id: doc.id });
         });
         setState(docs);
-        dispatch(personLoad(person));
-        localStorage.setItem(indice, JSON.stringify(docs));
+        sessionStorage.setItem(indice, JSON.stringify(docs));
       });
     }
    
   }
 
-  useEffect(() => {
+  useEffect(async () => {
     getLinks();
-
   }, []);
 
   const person = {
@@ -65,10 +80,6 @@ function App() {
     address: (perfil && perfil[0]) ? perfil[0].address : '',
     tlf: (perfil && perfil[0]) ? perfil[0].tlf : '',
     zip: (perfil && perfil[0]) ? perfil[0].zip : '',
-    social: [
-      {name: 'github', url: 'https://github.com/stevenjose/'},
-      {name: 'linkedin', url: 'https://www.linkedin.com/in/joselopezarias/'},
-    ],
     social: [
       {
         "name": "linkedin",
